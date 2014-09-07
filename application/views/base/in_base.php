@@ -61,7 +61,9 @@
 
           </ul>
             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="http://antigate.com/" target="_blank"> Баланс Антигейт:  <?php echo $antigate .'$';?></a></li>
+                <li><?= HTML::anchor('', $user); ?></li>
+                 <li><?= HTML::anchor('user/logout', 'Logout'); ?></li>
+
                       </ul>
           <p></p>
         </div>

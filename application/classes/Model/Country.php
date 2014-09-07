@@ -3,13 +3,9 @@
 class Model_Country extends ORM {
     protected $_table_name = 'country';
 
-    private $countries = array();
-
     public function __construct(){
         parent::__construct();
-        if(empty($this->countries)){
-            $this->countries = $this->getCountry();
-        }
+
     }
 
     /**
@@ -21,7 +17,7 @@ class Model_Country extends ORM {
     }
 
 
-    protected  function getCountry() {
+    public  function getCountry() {
         $result = array();
         $items =  $this->order_by('sort_order', 'desc')->find_all();
         foreach($items as $item){

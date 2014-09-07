@@ -1,11 +1,15 @@
 <?php
-if(isset($errors)) echo '<p style="color:red">'.$errors.'</p>';?>
+if(isset($error))
+    foreach($error as $item){
+    echo '<p style="color:red">'.$item.'</p>';
+}
+?>
 <p>The documents will be processed within two business day.
 
 Please ensure that your identity information is accurate and upload a viewable, scanned copy of your proof of income (benefits letter, SSA-1099, monthly paychecks).</p>
 <div  style="width: 25%">
 
-<?php echo Form::open('main/add', array('enctype'=>'multipart/form-data'));?>
+<?php echo Form::open('income/add', array('enctype'=>'multipart/form-data'));?>
   <div class="form-group" >
     <label for="update_days">SSN
     </label><br>
@@ -35,7 +39,9 @@ Please ensure that your identity information is accurate and upload a viewable, 
       <label for="items_per_page"> Employee Status
 
       </label><br>
-      <?php echo Form::select('employee_status', array(), 0, array('class'=>'form-control')) ?>
+      <?php
+      $status = isset($_POST['employee_status'])? $_POST['employee_status']:0;
+      echo Form::select('employee_status', array('Please Select')+$employee_status, $status, array('class'=>'form-control')) ?>
     </div>
 
     <div class="form-group">

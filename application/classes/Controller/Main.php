@@ -14,11 +14,20 @@ class Controller_Main extends Controller_Base {
     }
 	public function action_index()
 	{
-
         $text = $this->session->get_once('Added');
-
         $params = array('params' => '');
-        $this->template->content = View::factory('in_main', $params);
+        $this->template->content = View::factory('in_main', $params)->bind('error', $errors);
+        if ($_POST) {
+             $post = $this->request->post();
+             try {
+                 $verify = ORM::factory('Verify');
+                 $verify->values(Arr::merge($_FILES, $post));
+                 $verify->user_id = $this->user->id;
+                 $verify->save();
+             } catch (ORM_Validation_Exception $e) {
+                 $errors = $e->errors('model');
+             }
+         }
 	}
 
 
@@ -26,20 +35,7 @@ class Controller_Main extends Controller_Base {
     public function action_add()
     {
 
-        if ($_POST) {
-            $post = $this->request->post();
-            try {
-                $verify = ORM::factory('Verify');
-                $verify->values(Arr::merge($_FILES, $post));
-                $verify->save();
-            } catch (ORM_Validation_Exception $e) {
-                $errors = $e->errors();
-            }
 
-
-            //$this->session->set('Added', 'Данные добавлены');
-            $this->redirect('main/index');
-        }
     }
 
 

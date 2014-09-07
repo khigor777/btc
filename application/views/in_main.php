@@ -1,7 +1,11 @@
 <?php
-if(isset($errors)) echo '<p style="color:red">'.$errors.'</p>';?>
+if(isset($error))
+    foreach($error as $item){
+    echo '<p style="color:red">'.$item.'</p>';
+}
+?>
 <div  style="width: 25%">
-<?php echo Form::open('main/add', array('enctype'=>'multipart/form-data'));?>
+<?php echo Form::open('main/index', array('enctype'=>'multipart/form-data'));?>
   <div class="form-group" >
     <label for="update_days">Your Name</label><br>
     <?php echo Form::input('name', $params, array('class'=>'form-control'))?>

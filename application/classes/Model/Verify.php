@@ -63,27 +63,9 @@ class Model_Verify extends ORM {
                  ),
         );
     }
-
     public function save_file($file)
     {
-        $dir = $this->getUploadDir();
-        $res = Upload::save($_FILES['file'], $this->getFileName($file), $dir);
-        if($res){
-            $this->set('file', $this->getFileName($file));
-        }
-        return $res;
-    }
-
-
-    private function getUploadDir()
-    {
-        return DOCROOT . 'upload/verify' . DIRECTORY_SEPARATOR;
-    }
-
-
-
-    private function getFileName($file)
-    {
-        return uniqid() . '.' . strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $helper = new Model_Helper('upload/verify');
+        return $helper->save_file($file, $this);
     }
 }

@@ -3,14 +3,21 @@
 class Controller_Base extends Controller_Template {
 
     public $template = 'base/in_base';
+    /**
+     * @var $user Model_User
+     */
+    protected $user;
 
     public function before()
     {
 
         parent::before();
+        $this->setUser();
         require_once Kohana::find_file('vendor', 'Domain/Domain');
         require_once Kohana::find_file('vendor', 'Domain/Main');
         require_once Kohana::find_file('vendor', 'phpQuery/phpQuery/phpQuery');
+        require_once Kohana::find_file('vendor', 'paypal/paypal');
+
             I18n::lang('ru');
             $this->template->title = 'Анализ ссылок';
             $this->template->meta_keywords = '';
@@ -23,8 +30,7 @@ class Controller_Base extends Controller_Template {
                         'Identity Verification' => URL::site('main'),
                         'Address' => URL::site('address'),
                         'Income Verification ' => URL::site('income'),
-                        'Добавить' => URL::site('link'),
-                        'Настройки' => Url::site('config'));
+                        'PayPal, eBay & Social Networks' => URL::site('network'));
             $this->template->styles = array(
                 HTML::script('media/js/main/jquery-1.9.1.min.js'),
                 HTML::script('media/js/main/jquery.mockjax.js'),
@@ -46,7 +52,10 @@ class Controller_Base extends Controller_Template {
                 HTML::script('media/js/main/address.js'),
                 HTML::style('media/css/dashboard.css'),
             );
-        $this->template->antigate = '';//$this->getBalanceAntigate();
+        if($this->user !== null){
+            $this->template->user = $this->user->username;
+        }
+
     }
 
     private function getBalanceAntigate() {
@@ -60,5 +69,12 @@ class Controller_Base extends Controller_Template {
         $balance = $antigate->getBalance();
         Cookie::set($key, $balance, 60*60 );
         return $balance;
+    }
+
+    protected  function setUser(){
+        $this->user = Auth::instance()->get_user();
+        if($this->user === null){
+           $this->redirect('user');
+        }
     }
 }

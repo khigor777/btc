@@ -1,10 +1,14 @@
 <?php
-if(isset($errors)) echo '<p style="color:red">'.$errors.'</p>';?>
+if(isset($error))
+    foreach($error as $item){
+    echo '<p style="color:red">'.$item.'</p>';
+}
+?>
 <p>The document will be processed within <b>two business day.</b><br>
   Please ensure that your address information is accurate and upload a recent, viewable, scanned copy of a utility bill or a copy of another official document that shows your address and has your name on it. Photo IDs are not a valid form of address verification.</p>
 <div  style="width: 25%">
 
-<?php echo Form::open('main/add', array('enctype'=>'multipart/form-data'));?>
+<?php echo Form::open('address/add', array('enctype'=>'multipart/form-data'));?>
   <div class="form-group" >
     <label for="update_days">Address Line 1
     </label><br>
@@ -38,7 +42,7 @@ if(isset($errors)) echo '<p style="color:red">'.$errors.'</p>';?>
 
     <div class="form-group">
     <label for="notify_days">Country</label><br>
-      <?php echo Form::select('gender', array('Please Select')+Model_Verify::getGender(), 0 , array('class'=>'form-control')) ?>
+      <?php echo Form::select('country_id', array('Please Select')+$country, 0 , array('class'=>'form-control')) ?>
     </div>
 
     <div class="form-group">
@@ -48,6 +52,6 @@ if(isset($errors)) echo '<p style="color:red">'.$errors.'</p>';?>
     </div>
 <div class="form-group">
  </div>
-  <button type="submit" id="sb_button" class="btn btn-default">Сохранить</button>
+  <button type="submit" id="sb_button" class="btn btn-default">Save</button>
 <?php echo Form::close();?>
 </div>
